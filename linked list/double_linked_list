@@ -1,0 +1,145 @@
+#include<iostream>
+using namespace std;
+
+struct Node{
+	int data;
+	Node* next;
+	Node* prev;
+};
+
+class LL{
+	private:
+		Node* head;
+		Node* t1;
+		Node* t2;
+		int len;
+	public:
+		LL(){
+			head=t1=t2=NULL;
+			len=0;
+		}
+		~LL(){
+			delete head;
+			delete t1;
+			delete t2;
+		}
+		void insert(int);
+		void remove();
+		void sort();
+		void print();
+		bool ascen();
+		bool descen();
+};
+
+void LL::insert(int x){
+	if(head==NULL){
+		head=new Node;
+		head->data=x;
+		head->next=head->prev=NULL;
+		len++;
+		return;
+	}
+	int pos;
+	cout<<"Insert at position: ";cin>>pos;
+	t1=head;
+	if(pos>1 && pos<=(len+1)){
+		for(int i=1;i<(pos-1);i++){
+			t1=t1->next;
+		}
+		t2=new Node;
+		t2->data=x;
+		t2->next=t1->next;
+		if(t1->next!=NULL){
+			t1->next->prev=t2;
+		}
+		t2->prev=t1;
+		t1->next=t2;
+		len++;
+		return;
+	}
+	else if(pos==1){
+		t2=new Node;
+		t2->data=x;
+		t2->prev=NULL;
+		t2->next=t1;
+		t1->prev=t2;
+		head=t2;
+		len++;
+		return;
+	}
+	else{
+		cout<<"Invalid Position!"<<endl;
+		return;
+	}
+}
+
+void LL::remove(){
+	if(head==NULL){
+		cout<<"Nothing to remove from Linked List!"<<endl;
+		return;
+	}
+	int pos;
+	cout<<"Delete at Position: ";cin>>pos;
+	t1=head;
+	if(pos>1 && pos<=len){
+		for(int i=1;i<(pos-1);i++){
+			t1=t1->next;
+		}
+		t2=t1->next;
+		t1->next=t2->next;
+		if(t2->next!=NULL){
+			t2->next->prev=t1;
+		}
+		delete t2;
+		t2=NULL;
+		return;
+	}
+	else if(pos==1){
+		t2=t1;
+		t1=t1->next;
+		t1->prev=NULL;
+		head=t1;
+		delete t2;
+		t2=NULL;
+		return;
+	}
+	else{
+		cout<<"Invalid position!"<<endl;
+		return;
+	}
+}
+
+void LL::print(){
+	if(head==NULL){
+		cout<<"Nothing in Linked List to Print!"<<endl;
+		return;
+	}
+	t1=head;
+	cout<<"LInked List: Head -> ";
+	while(t1!=NULL){
+		cout<<t1->data<<" -> ";
+		t1=t1->next;
+	}
+	cout<<" NULL"<<endl;
+	return;
+}
+
+int main(){
+	LL l;
+	int c,val;
+	do{
+		cout<<"1.Insert  2.Remove  3.Print ";cin>>c;
+		switch(c){
+			case 1: 
+				cout<<"Enter Value: ";cin>>val;
+				l.insert(val);
+				break;
+			case 2:
+				l.remove();
+				break;
+			case 3:
+				l.print();
+				break;
+		}
+	}while(c==1 || c==2 || c==3);
+}
